@@ -19,7 +19,7 @@
             --color-secondary: #ff0080;
             --color-accent: #00d9ff;
             --color-text: #ffffff;
-            --color-text-dim: #888888;
+            --color-text-dim: #b0b0b0; /* Increased text brightness from #888888 to #b0b0b0 for better readability */
             --font-display: 'Onest', sans-serif;
             --font-mono: 'Fira Code', 'Fira Mono', monospace;
         }
@@ -98,7 +98,7 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            opacity: 0.85;
+            opacity: 0.65; /* Reduced opacity from 0.85 to 0.65 to darken background gradient */
         }
 
         .container {
@@ -1110,8 +1110,7 @@
                 document.body.classList.remove('extreme-glitch');
             }, 800);
             
-            // Random interval between 3 to 15 seconds
-            const nextGlitch = Math.random() * 12000 + 3000;
+            const nextGlitch = Math.random() * 18000 + 7000;
             setTimeout(triggerExtremeGlitch, nextGlitch);
         }
 
