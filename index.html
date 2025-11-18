@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release любой ценой — Карточная игра для разработчиков</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800;900&family=Fira+Mono:wght@400;500;700&family=Fira+Code:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #000000;
+            --color-primary: #00ff88;
+            --color-secondary: #ff0080;
+            --color-accent: #00d9ff;
+            --color-text: #ffffff;
+            --color-text-dim: #888888;
+            --font-display: 'Onest', sans-serif;
+            --font-mono: 'Fira Code', 'Fira Mono', monospace;
+        }
+
+        body {
+            font-family: var(--font-mono);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #glitch-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 80px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: clamp(80px, 10vh, 120px) 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-primary);
+            margin-bottom: 40px;
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(0.98); }
+        }
+
+        .hero-badge::before {
+            content: '●';
+            color: var(--color-primary);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1 {
+            font-size: clamp(56px, 12vw, 180px);
+            font-weight: 400;
+            line-height: 0.95;
+            margin-bottom: 40px;
+            letter-spacing: -0.04em;
+            position: relative;
+            font-family: var(--font-display);
+        }
+
+        .release-highlight {
+            font-family: var(--font-mono);
+            color: var(--color-primary);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            text-transform: none;
+        }
+
+        .glitch-text {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(180deg, #ffffff 0%, #cccccc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glitch-text::before {
+            color: #00ff88;
+            animation: glitch-1 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+            z-index: -1;
+        }
+
+        .glitch-text::after {
+            color: #ff0080;
+            animation: glitch-2 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite reverse;
+            z-index: -2;
+        }
+
+        @keyframes glitch-1 {
+            0%, 90%, 100% {
+                transform: translate(0);
+                opacity: 0;
+            }
+            92% {
+                transform: translate(-5px, -3px);
+                opacity: 0.8;
+            }
+            94% {
+                transform: translate(3px, 2px);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes glitch-2 {
+            0%, 85%, 100% {
+                transform: translate(0);
+                opacity: 0;
+            }
+            88% {
+                transform: translate(4px, 3px);
+                opacity: 0.7;
+            }
+            91% {
+                transform: translate(-3px, -2px);
+                opacity: 0.7;
+            }
+        }
+
+        .hero-description {
+            font-size: clamp(18px, 2.5vw, 28px);
+            color: var(--color-text-dim);
+            max-width: 700px;
+            margin-bottom: 60px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 48px;
+            background: var(--color-primary);
+            color: #000000;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 0;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            font-family: var(--font-mono);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            background: var(--color-text);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.4);
+        }
+
+        .cta-button::after {
+            content: '→';
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover::after {
+            transform: translateX(4px);
+        }
+
+        .stats {
+            padding: clamp(100px, 15vh, 180px) 0;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-grid {
+            /* Added 3rd column for infinite fun */
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat {
+            padding: clamp(40px, 6vw, 80px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            position: relative;
+            transition: all 0.4s ease;
+            cursor: default;
+        }
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+        .stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .stat:hover::before {
+            opacity: 0.05;
+        }
+
+        .stat-number {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            color: var(--color-primary);
+            line-height: 1;
+            margin-bottom: 16px;
+            font-family: var(--font-mono);
+            position: relative;
+            z-index: 1;
+            transition: all 0.4s;
+            white-space: nowrap;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            color: var(--color-text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        .features {
+            padding: clamp(120px, 18vh, 220px) 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            margin-bottom: clamp(80px, 12vh, 140px);
+        }
+
+        .section-eyebrow {
+            font-size: 14px;
+            color: var(--color-primary);
+            font-family: var(--font-mono);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            margin-bottom: 32px;
+        }
+
+        .section-description {
+            font-size: clamp(18px, 2vw, 24px);
+            color: var(--color-text-dim);
+            max-width: 800px;
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .feature-card {
+            background: var(--color-bg);
+            padding: clamp(40px, 5vw, 60px);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: default;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            background: rgba(0, 255, 136, 0.02);
+            transform: translateY(-8px);
+        }
+
+        .feature-number {
+            font-size: 14px;
+            color: var(--color-primary);
+            font-family: var(--font-mono);
+            margin-bottom: 32px;
+            font-weight: 600;
+        }
+
+        .feature-icon {
+            font-size: 56px;
+            margin-bottom: 32px;
+            display: block;
+            filter: grayscale(100%);
+            transition: filter 0.4s;
+        }
+
+        .feature-card:hover .feature-icon {
+            filter: grayscale(0%);
+        }
+
+        /* Fixed cursor vertical alignment to be centered with text baseline */
+        .terminal-cursor {
+            display: inline-block;
+            width: 0.55em;
+            height: 0.85em;
+            background-color: var(--color-primary);
+            margin-left: 8px;
+            animation: cursor-blink 1s step-end infinite;
+            vertical-align: baseline;
+            position: relative;
+            top: 0.05em; /* Adjusted to center with text */
+        }
+
+        @keyframes cursor-blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .feature-title {
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            position: relative;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .feature-card:hover .feature-title {
+            color: var(--color-primary);
+        }
+
+        .feature-description {
+            color: var(--color-text-dim);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .how-to-play {
+            padding: clamp(120px, 18vh, 220px) 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(40px, 6vw, 80px);
+            margin-top: clamp(80px, 12vh, 140px);
+        }
+
+        .step {
+            position: relative;
+            padding: clamp(40px, 5vw, 60px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .step:hover {
+            border-color: var(--color-primary);
+            transform: translateX(8px);
+        }
+
+        .step-number {
+            font-size: clamp(80px, 12vw, 140px);
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.03);
+            font-family: var(--font-mono);
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: var(--color-primary);
+            font-family: var(--font-mono);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .step-title {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            transition: color 0.3s ease;
+        }
+
+        .step:hover .step-title {
+            color: var(--color-primary);
+        }
+
+        .step-description {
+            color: var(--color-text-dim);
+            font-size: 16px;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta {
+            padding: clamp(140px, 20vh, 280px) 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .final-cta-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(56px, 10vw, 140px);
+            font-weight: 700;
+            margin-bottom: 48px;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .final-cta p {
+            font-size: clamp(20px, 2.5vw, 28px);
+            color: var(--color-text-dim);
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            padding: 60px clamp(24px, 5vw, 80px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 18px;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            color: var(--color-text);
+        }
+
+        .footer-credit {
+            font-size: 14px;
+            color: var(--color-text-dim);
+            font-family: var(--font-mono);
+        }
+
+        .particle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--color-primary);
+            opacity: 0.3;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to bottom, transparent, var(--color-primary), transparent);
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.3;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 90vh;
+            }
+
+            h1 {
+                font-size: clamp(48px, 15vw, 80px);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .stat:last-child {
+                border-bottom: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scan-line"></div>
+    <div class="particle-container" id="particles"></div>
+    <canvas id="glitch-canvas"></canvas>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span>v1.0.0</span>
+                <span style="opacity: 0.5;">|</span>
+                <span>Карточная игра</span>
+            </div>
+            <!-- Fixed cursor height alignment -->
+            <h1>
+                <span class="release-highlight">Release</span><span class="terminal-cursor"></span><br>
+                <span class="glitch-text" data-text="любой ценой">любой ценой</span>
+            </h1>
+            <p class="hero-description">
+                Стратегическая карточная игра про реальные будни разработки. 
+                Баги, неожиданные события, атаки соперников — преодолевай всё это и зарелизь первым.
+            </p>
+            <a href="#" class="cta-button">
+                <span>Начать игру</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <!-- Added back infinite fun stat -->
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-number">2–4</div>
+                    <div class="stat-label">игроков</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">15–30</div>
+                    <div class="stat-label">минут</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">веселье</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Механики игры</div>
+                <h2 class="section-title">Что внутри?</h2>
+                <p class="section-description">
+                    Каждая карта — это реальная ситуация из жизни разработчиков. 
+                    Узнаёте себя?
+                </p>
+            </div>
+            <!-- Added glitch on hover to all titles and updated content -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-number">01</div>
+                    <span class="feature-icon">🐛</span>
+                    <h3 class="feature-title" data-text="Баги и фиксы">Баги и фиксы</h3>
+                    <p class="feature-description">
+                        Другие игроки могут подкидывать баги (атаковать), а вы можете их фиксить (защищаться). 
+                        Каждое решение имеет последствия.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">02</div>
+                    <span class="feature-icon">🎯</span>
+                    <h3 class="feature-title" data-text="Зарелизь всё">Зарелизь всё</h3>
+                    <p class="feature-description">
+                        Финальная цель — разместить в зону релиза карты бэкенда, фронтенда и базы данных. 
+                        Первый, кто соберёт всё, побеждает.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">03</div>
+                    <span class="feature-icon">🤖</span>
+                    <h3 class="feature-title" data-text="AI события">AI события</h3>
+                    <p class="feature-description">
+                        Случайные карты усложняют игру и меняют расклад сил. 
+                        Адаптируйтесь к хаосу разработки.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">04</div>
+                    <span class="feature-icon">😂</span>
+                    <h3 class="feature-title" data-text="IT мемы">IT мемы</h3>
+                    <p class="feature-description">
+                        «Works on my machine», «It's not a bug, it's a feature». 
+                        Узнаёте? Это всё здесь.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">05</div>
+                    <span class="feature-icon">⚔️</span>
+                    <h3 class="feature-title" data-text="Игра против игроков">Игра против игроков</h3>
+                    <p class="feature-description">
+                        Соперничайте друг с другом, блокируйте чужие релизы атакуя соперников. 
+                        Преодолевайте игровые ситуации, чтобы победить.
+                    </p>
+                </div>
+                <!-- Added new card with game contents -->
+                <div class="feature-card">
+                    <div class="feature-number">06</div>
+                    <span class="feature-icon">📦</span>
+                    <h3 class="feature-title" data-text="Комплект">Комплект</h3>
+                    <p class="feature-description">
+                        Всего 111 карт (33 уникальных), правила игры и стикерпак. 
+                        Всё необходимое для старта в одной коробке.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-to-play">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Правила</div>
+                <h2 class="section-title">Как играть?</h2>
+                <p class="section-description">
+                    Простые правила, глубокая стратегия. Научитесь за 5 минут, 
+                    совершенствуйте годами.
+                </p>
+            </div>
+            <div class="steps-grid">
+                <div class="step">
+                    <span class="step-number">01</span>
+                    <div class="step-label">// Начало игры</div>
+                    <h3 class="step-title" data-text="Подготовка">Подготовка</h3>
+                    <p class="step-description">
+                        Уберите карты Debugger и Error 500 из колоды. Каждый игрок получает 1 Debugger и 4 карты из колоды. 
+                        Вставьте обратно Error 500 и Debugger, перетасуйте и положите колоду на стол.
+                    </p>
+                </div>
+                <div class="step">
+                    <span class="step-number">02</span>
+                    <div class="step-label">// Игровой процесс</div>
+                    <h3 class="step-title" data-text="Ваш ход">Ваш ход</h3>
+                    <p class="step-description">
+                        Играйте любое количество карт за ход, но берите только одну карту из колоды. 
+                        По завершении хода скажите «PUSH» — это передаёт ход следующему игроку.
+                    </p>
+                </div>
+                <div class="step">
+                    <span class="step-number">03</span>
+                    <div class="step-label">// Бой</div>
+                    <h3 class="step-title" data-text="Атака и защита">Атака и защита</h3>
+                    <p class="step-description">
+                        Атакуйте игроков или их релизы. Используйте Root Access для усиления атаки. 
+                        Атакуемый может защищаться или отразить атаку обратно. Будьте готовы к контратаке!
+                    </p>
+                </div>
+                <div class="step">
+                    <span class="step-number">04</span>
+                    <div class="step-label">// Релиз и победа</div>
+                    <h3 class="step-title" data-text="Завершение">Завершение</h3>
+                    <p class="step-description">
+                        Размещайте карты Release, жертвуя карту из руки. Code Review защищает релиз от атак. 
+                        Победа: три карты Release (Frontend, Backend, Database) на столе в конце вашего хода, или вы последний в игре.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <div class="final-cta-content">
+            <h2>ГОТОВЫ<br>К РЕЛИЗУ?</h2>
+            <p>
+                Испытайте на себе все прелести разработки в безопасной 
+                обстановке настольной игры.
+            </p>
+            <a href="#" class="cta-button">
+                <span>Заказать игру</span>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">RELEASE ЛЮБОЙ ЦЕНОЙ</div>
+            <div class="footer-credit">© 2025 — Все права защищены</div>
+        </div>
+    </footer>
+
+    <script>
+        const particleContainer = document.getElementById('particles');
+        const symbols = ['<', '>', '{', '}', '/', '*', '=', ';', '(', ')', '[', ']', '0', '1'];
+        const particleCount = 25;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            particle.style.position = 'absolute';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            particle.style.color = Math.random() > 0.5 ? 'rgba(0, 255, 136, 0.3)' : 'rgba(0, 217, 255, 0.3)';
+            particle.style.fontFamily = 'Fira Code, monospace';
+            particle.style.fontWeight = '300';
+            particle.style.pointerEvents = 'none';
+            particle.style.textShadow = `0 0 10px ${Math.random() > 0.5 ? 'rgba(0, 255, 136, 0.5)' : 'rgba(0, 217, 255, 0.5)'}`;
+            particle.style.animationDuration = (Math.random() * 15 + 15) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.animation = `float linear infinite`;
+            particleContainer.appendChild(particle);
+        }
+
+        const canvas = document.getElementById('glitch-canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        
+        if (gl) {
+            const resize = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            };
+            resize();
+            window.addEventListener('resize', resize);
+
+            const vertexShaderSource = `
+                attribute vec2 position;
+                void main() {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+
+            const fragmentShaderSource = `
+                precision highp float;
+                uniform float time;
+                uniform vec2 resolution;
+                uniform vec2 mouse;
+
+                float random(vec2 st) {
+                    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+                }
+
+                float noise(vec2 st) {
+                    vec2 i = floor(st);
+                    vec2 f = fract(st);
+                    float a = random(i);
+                    float b = random(i + vec2(1.0, 0.0));
+                    float c = random(i + vec2(0.0, 1.0));
+                    float d = random(i + vec2(1.0, 1.0));
+                    vec2 u = f * f * (3.0 - 2.0 * f);
+                    return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+                }
+
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / resolution.xy;
+                    vec3 color = vec3(0.0);
+                    
+                    // Enhanced dramatic glitch effect
+                    float glitchIntensity = 0.0;
+                    float timeSnap = floor(time * 4.0);
+                    
+                    if (mod(timeSnap, 3.0) < 1.0) {
+                        glitchIntensity = random(vec2(timeSnap, uv.y)) * 1.5;
+                    }
+                    
+                    // Horizontal scan displacement
+                    float displacement = step(0.90, random(vec2(uv.y * 25.0 + timeSnap, timeSnap)));
+                    uv.x += displacement * glitchIntensity * (random(vec2(timeSnap)) - 0.5) * 0.5;
+                    
+                    // Strong RGB chromatic aberration
+                    float splitAmount = glitchIntensity * 0.04;
+                    color.r = noise(uv + vec2(splitAmount * 2.0, 0.0) + time * 0.1) * 0.25;
+                    color.g = noise(uv - vec2(splitAmount * 1.5, 0.0) + time * 0.15) * 0.3;
+                    color.b = noise(uv + vec2(0.0, splitAmount) + time * 0.12) * 0.35;
+                    
+                    // Thin grid pattern (like code editor)
+                    float gridX = step(0.985, fract(uv.x * 60.0 + time * 0.3));
+                    float gridY = step(0.985, fract(uv.y * 60.0 - time * 0.2));
+                    color += vec3(gridX + gridY) * 0.02;
+                    
+                    // Subtle scanlines
+                    float scanline = sin(uv.y * resolution.y * 1.5 + time * 2.0) * 0.02;
+                    color += vec3(scanline);
+                    
+                    // Glitch blocks (like corrupted pixels)
+                    float blockGlitch = step(0.97, random(vec2(floor(uv.x * 15.0), floor(time * 3.0 + uv.y * 5.0))));
+                    color += vec3(blockGlitch * 0.1);
+                    
+                    // Enhanced chromatic aberration on edges
+                    float aberration = sin(time * 3.0 + uv.y * 15.0) * 0.015;
+                    color.r += aberration;
+                    color.b -= aberration;
+                    
+                    // Vignette
+                    float vignette = 1.0 - length(uv - 0.5) * 0.5;
+                    color *= vignette;
+                    
+                    // Increase overall glitch visibility
+                    color *= 1.2;
+                    
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `;
+
+            function createShader(type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error(gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+
+            const vertexShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error(gl.getProgramInfoLog(program));
+            }
+
+            gl.useProgram(program);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                -1, -1,  1, -1,  -1, 1,
+                -1, 1,   1, -1,   1, 1
+            ]), gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, 'position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const timeLocation = gl.getUniformLocation(program, 'time');
+            const resolutionLocation = gl.getUniformLocation(program, 'resolution');
+            const mouseLocation = gl.getUniformLocation(program, 'mouse');
+
+            let startTime = Date.now();
+            let mouseX = 0.5;
+            let mouseY = 0.5;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX / window.innerWidth;
+                mouseY = 1.0 - (e.clientY / window.innerHeight);
+            });
+
+            function render() {
+                const currentTime = (Date.now() - startTime) * 0.001;
+                
+                gl.uniform1f(timeLocation, currentTime);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                gl.uniform2f(mouseLocation, mouseX, mouseY);
+                
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            }
+
+            render();
+        }
+    </script>
+</body>
+</html>
