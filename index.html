@@ -670,6 +670,62 @@
             }
         }
 
+        /* Added product box section styles */
+        .product-box {
+            padding: clamp(120px, 18vh, 220px) 0;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .box-wrapper {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: clamp(60px, 10vh, 100px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .box-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.15) 0%, rgba(0, 217, 255, 0.08) 40%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+        
+        .box-image {
+            width: 100%;
+            height: auto;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 20px 60px rgba(0, 255, 136, 0.3));
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .box-image:hover {
+            transform: translateY(-12px) scale(1.02);
+            filter: drop-shadow(0 30px 80px rgba(0, 255, 136, 0.5));
+        }
+
         .scan-line {
             position: fixed;
             top: 0;
@@ -690,6 +746,153 @@
             100% {
                 transform: translateY(100vh);
             }
+        }
+
+        /* Updated card gallery to display 4 cards in single row and made it more subtle */
+        .card-showcase {
+            padding: clamp(80px, 12vh, 140px) 0;
+            position: relative;
+            z-index: 1;
+            opacity: 0.85;
+        }
+        
+        .cards-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: clamp(20px, 3vw, 30px);
+            margin-top: clamp(60px, 10vh, 100px);
+        }
+        
+        .game-card {
+            position: relative;
+            aspect-ratio: 0.71;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            opacity: 0.9;
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(255, 0, 128, 0.08) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 2;
+            pointer-events: none;
+        }
+        
+        .game-card:hover::before {
+            opacity: 1;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.25);
+            opacity: 1;
+        }
+        
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Added FAQ section styles */
+        .faq {
+            padding: clamp(120px, 18vh, 220px) 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .faq-list {
+            margin-top: clamp(80px, 12vh, 140px);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .faq-item {
+            background: var(--color-bg);
+            padding: clamp(40px, 5vw, 60px);
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .faq-item:hover {
+            background: rgba(0, 255, 136, 0.02);
+        }
+        
+        .faq-question {
+            font-size: clamp(20px, 3vw, 28px);
+            font-weight: 600;
+            color: var(--color-text);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            transition: color 0.3s;
+            font-family: var(--font-display);
+        }
+        
+        .faq-item:hover .faq-question {
+            color: var(--color-primary);
+        }
+        
+        .faq-question::after {
+            content: '+';
+            font-size: 32px;
+            font-weight: 300;
+            color: var(--color-primary);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+        
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, margin-top 0.4s ease;
+            font-size: 16px;
+            color: var(--color-text-dim);
+            line-height: 1.7;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            margin-top: 24px;
+        }
+
+        /* Added product box showcase section styles */
+        .product-box {
+            padding: clamp(100px, 15vh, 180px) 0;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .box-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box-image {
+            max-width: 100%;
+            height: auto;
         }
 
         @media (max-width: 1200px) {
@@ -733,7 +936,18 @@
                 gap: 20px;
                 text-align: center;
             }
+            
+            /* Made card gallery single column on mobile */
+            .cards-gallery {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Added mobile styles for product box */
+            .box-wrapper {
+                padding: clamp(40px, 8vh, 60px);
+            }
         }
+        
     </style>
 </head>
 <body>
@@ -748,7 +962,6 @@
                 <span style="opacity: 0.5;">|</span>
                 <span>Карточная игра</span>
             </div>
-            <!-- Fixed cursor height alignment -->
             <h1>
                 <span class="release-highlight">Release</span><span class="terminal-cursor"></span><br>
                 <span class="glitch-text" data-text="любой ценой">любой ценой</span>
@@ -757,8 +970,9 @@
                 Стратегическая карточная игра про реальные будни разработки. 
                 Баги, неожиданные события, атаки соперников — преодолевай всё это и зарелизь первым.
             </p>
+            <!-- Updated CTA to pre-order messaging -->
             <a href="#" class="cta-button">
-                <span>Начать игру</span>
+                <span>Предзаказать</span>
             </a>
         </div>
     </section>
@@ -779,6 +993,15 @@
                     <div class="stat-number">∞</div>
                     <div class="stat-label">веселье</div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Added product box showcase section -->
+    <section class="product-box">
+        <div class="container">
+            <div class="box-wrapper">
+                <img src="/placeholder.svg?height=800&width=600" alt="Release любой ценой — упаковка игры" class="box-image">
             </div>
         </div>
     </section>
@@ -840,15 +1063,39 @@
                         Преодолевайте игровые ситуации, чтобы победить.
                     </p>
                 </div>
-                <!-- Added new card with game contents -->
+                <!-- Replaced "Комплект" with card mechanics -->
                 <div class="feature-card">
                     <div class="feature-number">06</div>
-                    <span class="feature-icon">📦</span>
-                    <h3 class="feature-title" data-text="Комплект">Комплект</h3>
+                    <span class="feature-icon">🃏</span>
+                    <h3 class="feature-title" data-text="Операционные карты">Операционные карты</h3>
                     <p class="feature-description">
-                        Всего 111 карт (33 уникальных), правила игры и стикерпак. 
-                        Всё необходимое для старта в одной коробке.
+                        Операционные и поддерживающие карты позволяют взаимодействовать с колодой, 
+                        усиливать совместимые карты и менять игровую ситуацию в вашу пользу.
                     </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reduced cards from 5 to 4 and made section more subtle -->
+    <section class="card-showcase">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Примеры карт</div>
+                <h2 class="section-title">Взгляните на карты</h2>
+            </div>
+            <div class="cards-gallery">
+                <div class="game-card">
+                    <img src="/images/frame-20952.png" alt="Null Pointer Exception - карта атаки">
+                </div>
+                <div class="game-card">
+                    <img src="/images/frame-20951.png" alt="Legacy Code - карта атаки">
+                </div>
+                <div class="game-card">
+                    <img src="/images/frame-20957.png" alt="Rubber Ducky - карта защиты">
+                </div>
+                <div class="game-card">
+                    <img src="/images/frame-20966.png" alt="Good Vibe-Coding - AI событие">
                 </div>
             </div>
         </div>
@@ -905,6 +1152,69 @@
         </div>
     </section>
 
+    <!-- Added FAQ section before final CTA -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-eyebrow">// Вопросы и ответы</div>
+                <h2 class="section-title">FAQ</h2>
+                <p class="section-description">
+                    Ответы на частые вопросы о Release любой ценой.
+                </p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Нужен ли опыт в программировании, чтобы играть?
+                    </div>
+                    <div class="faq-answer">
+                        Нет, не обязательно. Игра понятна всем, но особенно весёлой она станет для тех 
+                        , кто знаком с IT-культурой и разработкой. Все механики объясняются на картах, 
+                        так что можно начать играть сразу после прочтения правил.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Сколько длится партия?
+                    </div>
+                    <div class="faq-answer">
+                        Средняя партия занимает 15-30 минут. Время зависит от количества игроков, 
+                        их стратегии и знакомства с правилами. Первая партия может быть немного дольше.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Можно ли играть втроём или вдвоём?
+                    </div>
+                    <div class="faq-answer">
+                        Да! Игра рассчитана на 2-4 игроков. Динамика игры меняется в зависимости 
+                        от количества участников — вдвоём игра более тактическая, а вчетвером превращается 
+                        в настоящий хаос.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Что входит в комплект?
+                    </div>
+                    <div class="faq-answer">
+                        В коробке вы найдёте 111 игровых карт (33 уникальных), подробные правила игры 
+                        и стикерпак с IT-мемами. Всё упаковано в компактную коробку, которую удобно брать с собой.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Когда начнутся отправки предзаказов?
+                    </div>
+                    <div class="faq-answer">
+                        Первая партия игры находится в производстве. Мы начнём отправку предзаказов 
+                        в ближайшие месяцы. Все детали будут сообщены дополнительно по email 
+                        после оформления предзаказа.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="final-cta">
         <div class="final-cta-content">
             <h2>ГОТОВЫ<br>К РЕЛИЗУ?</h2>
@@ -912,8 +1222,9 @@
                 Испытайте на себе все прелести разработки в безопасной 
                 обстановке настольной игры.
             </p>
+            <!-- Updated CTA to pre-order messaging -->
             <a href="#" class="cta-button">
-                <span>Заказать игру</span>
+                <span>Оформить предзаказ</span>
             </a>
         </div>
     </section>
@@ -1104,18 +1415,35 @@
         }
 
         function triggerExtremeGlitch() {
+            const intensityMultiplier = Math.random() * 0.5 + 0.5; // Random from 0.5 (medium) to 1.0 (max)
+            
             document.body.classList.add('extreme-glitch');
+            document.body.style.setProperty('--glitch-intensity', intensityMultiplier);
             
             setTimeout(() => {
                 document.body.classList.remove('extreme-glitch');
             }, 800);
             
-            const nextGlitch = Math.random() * 18000 + 7000;
+            const nextGlitch = Math.random() * 20000 + 8000;
             setTimeout(triggerExtremeGlitch, nextGlitch);
         }
 
         // Start the first glitch after a random delay
         setTimeout(triggerExtremeGlitch, Math.random() * 5000 + 2000);
+        
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                });
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
