@@ -618,6 +618,9 @@
             align-items: center;
             max-width: 1400px;
             margin: 0 auto;
+            /* Updated footer layout to accommodate centered legal text */
+            flex-direction: column;
+            gap: 24px;
         }
 
         .footer-logo {
@@ -625,6 +628,20 @@
             font-weight: 600;
             font-family: var(--font-mono);
             color: var(--color-text);
+        }
+
+        /* Added legal text styling for footer */
+        .footer-legal {
+            text-align: center;
+            font-size: 13px;
+            color: var(--color-text-dim);
+            font-family: var(--font-mono);
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        .footer-legal-line {
+            display: block;
         }
 
         .footer-credit {
@@ -677,7 +694,7 @@
             z-index: 1;
             overflow: hidden;
         }
-        
+
         .box-wrapper {
             position: relative;
             max-width: 700px;
@@ -687,7 +704,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .box-wrapper::before {
             content: '';
             position: absolute;
@@ -700,7 +717,7 @@
             pointer-events: none;
             animation: pulse-glow 4s ease-in-out infinite;
         }
-        
+
         @keyframes pulse-glow {
             0%, 100% {
                 opacity: 1;
@@ -711,7 +728,7 @@
                 transform: translate(-50%, -50%) scale(1.1);
             }
         }
-        
+
         .box-image {
             width: 100%;
             height: auto;
@@ -720,7 +737,7 @@
             filter: drop-shadow(0 20px 60px rgba(0, 255, 136, 0.3));
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        
+
         .box-image:hover {
             transform: translateY(-12px) scale(1.02);
             filter: drop-shadow(0 30px 80px rgba(0, 255, 136, 0.5));
@@ -755,14 +772,14 @@
             z-index: 1;
             opacity: 0.85;
         }
-        
+
         .cards-gallery {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: clamp(20px, 3vw, 30px);
             margin-top: clamp(60px, 10vh, 100px);
         }
-        
+
         .game-card {
             position: relative;
             aspect-ratio: 0.71;
@@ -773,7 +790,7 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
             opacity: 0.9;
         }
-        
+
         .game-card::before {
             content: '';
             position: absolute;
@@ -787,31 +804,31 @@
             z-index: 2;
             pointer-events: none;
         }
-        
+
         .game-card:hover::before {
             opacity: 1;
         }
-        
+
         .game-card:hover {
             transform: translateY(-8px) scale(1.03);
             box-shadow: 0 15px 50px rgba(0, 255, 136, 0.25);
             opacity: 1;
         }
-        
+
         .game-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
-        
+
         /* Added FAQ section styles */
         .faq {
             padding: clamp(120px, 18vh, 220px) 0;
             position: relative;
             z-index: 1;
         }
-        
+
         .faq-list {
             margin-top: clamp(80px, 12vh, 140px);
             display: flex;
@@ -819,7 +836,7 @@
             gap: 2px;
             background: rgba(255, 255, 255, 0.05);
         }
-        
+
         .faq-item {
             background: var(--color-bg);
             padding: clamp(40px, 5vw, 60px);
@@ -828,11 +845,11 @@
             transition: all 0.4s ease;
             position: relative;
         }
-        
+
         .faq-item:hover {
             background: rgba(0, 255, 136, 0.02);
         }
-        
+
         .faq-question {
             font-size: clamp(20px, 3vw, 28px);
             font-weight: 600;
@@ -844,11 +861,11 @@
             transition: color 0.3s;
             font-family: var(--font-display);
         }
-        
+
         .faq-item:hover .faq-question {
             color: var(--color-primary);
         }
-        
+
         .faq-question::after {
             content: '+';
             font-size: 32px;
@@ -857,11 +874,11 @@
             transition: transform 0.3s;
             flex-shrink: 0;
         }
-        
+
         .faq-item.active .faq-question::after {
             transform: rotate(45deg);
         }
-        
+
         .faq-answer {
             max-height: 0;
             overflow: hidden;
@@ -870,7 +887,7 @@
             color: var(--color-text-dim);
             line-height: 1.7;
         }
-        
+
         .faq-item.active .faq-answer {
             max-height: 500px;
             margin-top: 24px;
@@ -936,7 +953,7 @@
                 gap: 20px;
                 text-align: center;
             }
-            
+
             /* Made card gallery single column on mobile */
             .cards-gallery {
                 grid-template-columns: 1fr !important;
@@ -947,7 +964,7 @@
                 padding: clamp(40px, 8vh, 60px);
             }
         }
-        
+
     </style>
 </head>
 <body>
@@ -958,21 +975,21 @@
     <section class="hero">
         <div class="container">
             <div class="hero-badge">
-                <span>v1.0.0</span>
+                <span>v0.1.0</span>
                 <span style="opacity: 0.5;">|</span>
-                <span>Карточная игра</span>
+                <span>Настольная игра</span>
             </div>
             <h1>
                 <span class="release-highlight">Release</span><span class="terminal-cursor"></span><br>
                 <span class="glitch-text" data-text="любой ценой">любой ценой</span>
             </h1>
             <p class="hero-description">
-                Стратегическая карточная игра про реальные будни разработки. 
+                Стратегическая карточная игра про реальные будни разработки.
                 Баги, неожиданные события, атаки соперников — преодолевай всё это и зарелизь первым.
             </p>
             <!-- Updated CTA to pre-order messaging -->
-            <a href="#" class="cta-button">
-                <span>Предзаказать</span>
+            <a href="https://boosty.to/releaseanycost" class="cta-button">
+                <span>Отслеживать на Boosty</span>
             </a>
         </div>
     </section>
@@ -1012,7 +1029,7 @@
                 <div class="section-eyebrow">// Механики игры</div>
                 <h2 class="section-title">Что внутри?</h2>
                 <p class="section-description">
-                    Каждая карта — это реальная ситуация из жизни разработчиков. 
+                    Каждая карта — это реальная ситуация из жизни разработчиков.
                     Узнаёте себя?
                 </p>
             </div>
@@ -1023,7 +1040,7 @@
                     <span class="feature-icon">🐛</span>
                     <h3 class="feature-title" data-text="Баги и фиксы">Баги и фиксы</h3>
                     <p class="feature-description">
-                        Другие игроки могут подкидывать баги (атаковать), а вы можете их фиксить (защищаться). 
+                        Другие игроки могут подкидывать баги (атаковать), а вы можете их фиксить (защищаться).
                         Каждое решение имеет последствия.
                     </p>
                 </div>
@@ -1032,7 +1049,7 @@
                     <span class="feature-icon">🎯</span>
                     <h3 class="feature-title" data-text="Зарелизь всё">Зарелизь всё</h3>
                     <p class="feature-description">
-                        Финальная цель — разместить в зону релиза карты бэкенда, фронтенда и базы данных. 
+                        Финальная цель — разместить в зону релиза карты бэкенда, фронтенда и базы данных.
                         Первый, кто соберёт всё, побеждает.
                     </p>
                 </div>
@@ -1041,7 +1058,7 @@
                     <span class="feature-icon">🤖</span>
                     <h3 class="feature-title" data-text="AI события">AI события</h3>
                     <p class="feature-description">
-                        Случайные карты усложняют игру и меняют расклад сил. 
+                        Случайные карты усложняют игру и меняют расклад сил.
                         Адаптируйтесь к хаосу разработки.
                     </p>
                 </div>
@@ -1050,7 +1067,7 @@
                     <span class="feature-icon">😂</span>
                     <h3 class="feature-title" data-text="IT мемы">IT мемы</h3>
                     <p class="feature-description">
-                        «Works on my machine», «It's not a bug, it's a feature». 
+                        «Works on my machine», «It's not a bug, it's a feature».
                         Узнаёте? Это всё здесь.
                     </p>
                 </div>
@@ -1059,7 +1076,7 @@
                     <span class="feature-icon">⚔️</span>
                     <h3 class="feature-title" data-text="Игра против игроков">Игра против игроков</h3>
                     <p class="feature-description">
-                        Соперничайте друг с другом, блокируйте чужие релизы атакуя соперников. 
+                        Соперничайте друг с другом, блокируйте чужие релизы атакуя соперников.
                         Преодолевайте игровые ситуации, чтобы победить.
                     </p>
                 </div>
@@ -1069,7 +1086,7 @@
                     <span class="feature-icon">🃏</span>
                     <h3 class="feature-title" data-text="Операционные карты">Операционные карты</h3>
                     <p class="feature-description">
-                        Операционные и поддерживающие карты позволяют взаимодействовать с колодой, 
+                        Операционные и поддерживающие карты позволяют взаимодействовать с колодой,
                         усиливать совместимые карты и менять игровую ситуацию в вашу пользу.
                     </p>
                 </div>
@@ -1086,16 +1103,16 @@
             </div>
             <div class="cards-gallery">
                 <div class="game-card">
-                    <img src="/images/frame-20952.png" alt="Null Pointer Exception - карта атаки">
+                    <img src="../img/00.png" alt="AI Hallucination"/>
                 </div>
                 <div class="game-card">
-                    <img src="/images/frame-20951.png" alt="Legacy Code - карта атаки">
+                    <img src="/img/01.png" alt="Error 500"/>
                 </div>
                 <div class="game-card">
-                    <img src="/images/frame-20957.png" alt="Rubber Ducky - карта защиты">
+                    <img src="/img/02.png" alt="Rubber Ducky"/>
                 </div>
                 <div class="game-card">
-                    <img src="/images/frame-20966.png" alt="Good Vibe-Coding - AI событие">
+                    <img src="/img/03.png" alt="Git Cherry-pick">
                 </div>
             </div>
         </div>
@@ -1107,7 +1124,7 @@
                 <div class="section-eyebrow">// Правила</div>
                 <h2 class="section-title">Как играть?</h2>
                 <p class="section-description">
-                    Простые правила, глубокая стратегия. Научитесь за 5 минут, 
+                    Простые правила, глубокая стратегия. Научитесь за 5 минут,
                     совершенствуйте годами.
                 </p>
             </div>
@@ -1117,7 +1134,7 @@
                     <div class="step-label">// Начало игры</div>
                     <h3 class="step-title" data-text="Подготовка">Подготовка</h3>
                     <p class="step-description">
-                        Уберите карты Debugger и Error 500 из колоды. Каждый игрок получает 1 Debugger и 4 карты из колоды. 
+                        Уберите карты Debugger и Error 500 из колоды. Каждый игрок получает 1 Debugger и 4 карты из колоды.
                         Вставьте обратно Error 500 и Debugger, перетасуйте и положите колоду на стол.
                     </p>
                 </div>
@@ -1126,7 +1143,7 @@
                     <div class="step-label">// Игровой процесс</div>
                     <h3 class="step-title" data-text="Ваш ход">Ваш ход</h3>
                     <p class="step-description">
-                        Играйте любое количество карт за ход, но берите только одну карту из колоды. 
+                        Играйте любое количество карт за ход, но берите только одну карту из колоды.
                         По завершении хода скажите «PUSH» — это передаёт ход следующему игроку.
                     </p>
                 </div>
@@ -1135,7 +1152,7 @@
                     <div class="step-label">// Бой</div>
                     <h3 class="step-title" data-text="Атака и защита">Атака и защита</h3>
                     <p class="step-description">
-                        Атакуйте игроков или их релизы. Используйте Root Access для усиления атаки. 
+                        Атакуйте игроков или их релизы. Используйте Root Access для усиления атаки.
                         Атакуемый может защищаться или отразить атаку обратно. Будьте готовы к контратаке!
                     </p>
                 </div>
@@ -1144,7 +1161,7 @@
                     <div class="step-label">// Релиз и победа</div>
                     <h3 class="step-title" data-text="Завершение">Завершение</h3>
                     <p class="step-description">
-                        Размещайте карты Release, жертвуя карту из руки. Code Review защищает релиз от атак. 
+                        Размещайте карты Release, жертвуя карту из руки. Code Review защищает релиз от атак.
                         Победа: три карты Release (Frontend, Backend, Database) на столе в конце вашего хода, или вы последний в игре.
                     </p>
                 </div>
@@ -1168,8 +1185,8 @@
                         Нужен ли опыт в программировании, чтобы играть?
                     </div>
                     <div class="faq-answer">
-                        Нет, не обязательно. Игра понятна всем, но особенно весёлой она станет для тех 
-                        , кто знаком с IT-культурой и разработкой. Все механики объясняются на картах, 
+                        Нет, не обязательно. Игра понятна всем, но особенно весёлой она станет для тех
+                        , кто знаком с IT-культурой и разработкой. Все механики объясняются на картах,
                         так что можно начать играть сразу после прочтения правил.
                     </div>
                 </div>
@@ -1178,7 +1195,7 @@
                         Сколько длится партия?
                     </div>
                     <div class="faq-answer">
-                        Средняя партия занимает 15-30 минут. Время зависит от количества игроков, 
+                        Средняя партия занимает 15-30 минут. Время зависит от количества игроков,
                         их стратегии и знакомства с правилами. Первая партия может быть немного дольше.
                     </div>
                 </div>
@@ -1187,8 +1204,8 @@
                         Можно ли играть втроём или вдвоём?
                     </div>
                     <div class="faq-answer">
-                        Да! Игра рассчитана на 2-4 игроков. Динамика игры меняется в зависимости 
-                        от количества участников — вдвоём игра более тактическая, а вчетвером превращается 
+                        Да! Игра рассчитана на 2-4 игроков. Динамика игры меняется в зависимости
+                        от количества участников — вдвоём игра более тактическая, а вчетвером превращается
                         в настоящий хаос.
                     </div>
                 </div>
@@ -1197,7 +1214,7 @@
                         Что входит в комплект?
                     </div>
                     <div class="faq-answer">
-                        В коробке вы найдёте 111 игровых карт (33 уникальных), подробные правила игры 
+                        В коробке вы найдёте 111 игровых карт (33 уникальных), подробные правила игры
                         и стикерпак с IT-мемами. Всё упаковано в компактную коробку, которую удобно брать с собой.
                     </div>
                 </div>
@@ -1206,8 +1223,8 @@
                         Когда начнутся отправки предзаказов?
                     </div>
                     <div class="faq-answer">
-                        Первая партия игры находится в производстве. Мы начнём отправку предзаказов 
-                        в ближайшие месяцы. Все детали будут сообщены дополнительно по email 
+                        Первая партия игры находится в производстве. Мы начнём отправку предзаказов
+                        в ближайшие месяцы. Все детали будут сообщены дополнительно по email
                         после оформления предзаказа.
                     </div>
                 </div>
@@ -1219,12 +1236,12 @@
         <div class="final-cta-content">
             <h2>ГОТОВЫ<br>К РЕЛИЗУ?</h2>
             <p>
-                Испытайте на себе все прелести разработки в безопасной 
+                Испытайте на себе все прелести разработки в безопасной
                 обстановке настольной игры.
             </p>
             <!-- Updated CTA to pre-order messaging -->
-            <a href="#" class="cta-button">
-                <span>Оформить предзаказ</span>
+            <a href="https://boosty.to/releaseanycost" class="cta-button">
+                <span>Следить за проектом на Boosty</span>
             </a>
         </div>
     </section>
@@ -1232,7 +1249,12 @@
     <footer>
         <div class="footer-content">
             <div class="footer-logo">RELEASE ЛЮБОЙ ЦЕНОЙ</div>
-            <div class="footer-credit">© 2025 — Все права защищены</div>
+            <!-- Added two-line legal text block with age recommendation and advertising disclaimer -->
+            <div class="footer-legal">
+                <span class="footer-legal-line">Рекомендовано от 14 лет</span>
+                <span class="footer-legal-line">Реклама. [ФИО], ИНН [номер], ERID: [токен]</span>
+            </div>
+            <div class="footer-credit">© Dimbo, 2025 — Все права защищены</div>
         </div>
     </footer>
 
@@ -1261,7 +1283,7 @@
 
         const canvas = document.getElementById('glitch-canvas');
         const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-        
+
         if (gl) {
             const resize = () => {
                 canvas.width = window.innerWidth;
@@ -1302,50 +1324,50 @@
                 void main() {
                     vec2 uv = gl_FragCoord.xy / resolution.xy;
                     vec3 color = vec3(0.0);
-                    
+
                     // Enhanced dramatic glitch effect
                     float glitchIntensity = 0.0;
                     float timeSnap = floor(time * 4.0);
-                    
+
                     if (mod(timeSnap, 3.0) < 1.0) {
                         glitchIntensity = random(vec2(timeSnap, uv.y)) * 1.5;
                     }
-                    
+
                     // Horizontal scan displacement
                     float displacement = step(0.90, random(vec2(uv.y * 25.0 + timeSnap, timeSnap)));
                     uv.x += displacement * glitchIntensity * (random(vec2(timeSnap)) - 0.5) * 0.5;
-                    
+
                     // Strong RGB chromatic aberration
                     float splitAmount = glitchIntensity * 0.04;
                     color.r = noise(uv + vec2(splitAmount * 2.0, 0.0) + time * 0.1) * 0.25;
                     color.g = noise(uv - vec2(splitAmount * 1.5, 0.0) + time * 0.15) * 0.3;
                     color.b = noise(uv + vec2(0.0, splitAmount) + time * 0.12) * 0.35;
-                    
+
                     // Thin grid pattern (like code editor)
                     float gridX = step(0.985, fract(uv.x * 60.0 + time * 0.3));
                     float gridY = step(0.985, fract(uv.y * 60.0 - time * 0.2));
                     color += vec3(gridX + gridY) * 0.02;
-                    
+
                     // Subtle scanlines
                     float scanline = sin(uv.y * resolution.y * 1.5 + time * 2.0) * 0.02;
                     color += vec3(scanline);
-                    
+
                     // Glitch blocks (like corrupted pixels)
                     float blockGlitch = step(0.97, random(vec2(floor(uv.x * 15.0), floor(time * 3.0 + uv.y * 5.0))));
                     color += vec3(blockGlitch * 0.1);
-                    
+
                     // Enhanced chromatic aberration on edges
                     float aberration = sin(time * 3.0 + uv.y * 15.0) * 0.015;
                     color.r += aberration;
                     color.b -= aberration;
-                    
+
                     // Vignette
                     float vignette = 1.0 - length(uv - 0.5) * 0.5;
                     color *= vignette;
-                    
+
                     // Increase overall glitch visibility
                     color *= 1.2;
-                    
+
                     gl_FragColor = vec4(color, 1.0);
                 }
             `;
@@ -1402,11 +1424,11 @@
 
             function render() {
                 const currentTime = (Date.now() - startTime) * 0.001;
-                
+
                 gl.uniform1f(timeLocation, currentTime);
                 gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
                 gl.uniform2f(mouseLocation, mouseX, mouseY);
-                
+
                 gl.drawArrays(gl.TRIANGLES, 0, 6);
                 requestAnimationFrame(render);
             }
@@ -1416,29 +1438,29 @@
 
         function triggerExtremeGlitch() {
             const intensityMultiplier = Math.random() * 0.5 + 0.5; // Random from 0.5 (medium) to 1.0 (max)
-            
+
             document.body.classList.add('extreme-glitch');
             document.body.style.setProperty('--glitch-intensity', intensityMultiplier);
-            
+
             setTimeout(() => {
                 document.body.classList.remove('extreme-glitch');
             }, 800);
-            
+
             const nextGlitch = Math.random() * 20000 + 8000;
             setTimeout(triggerExtremeGlitch, nextGlitch);
         }
 
         // Start the first glitch after a random delay
         setTimeout(triggerExtremeGlitch, Math.random() * 5000 + 2000);
-        
+
         document.querySelectorAll('.faq-item').forEach(item => {
             item.addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
-                
+
                 document.querySelectorAll('.faq-item').forEach(otherItem => {
                     otherItem.classList.remove('active');
                 });
-                
+
                 if (!isActive) {
                     item.classList.add('active');
                 }
