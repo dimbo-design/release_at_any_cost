@@ -689,58 +689,151 @@
 
         /* Added product box section styles */
         .product-box {
-            padding: clamp(120px, 18vh, 220px) 0;
+            /* Увеличиваем ширину секции до full-width с правильным контейнером */
+            padding: clamp(100px, 15vh, 180px) 0;
+            background: transparent;
             position: relative;
             z-index: 1;
             overflow: hidden;
         }
 
+        /* Убираем ограничение max-width из box-wrapper */
         .box-wrapper {
             position: relative;
-            max-width: 700px;
+            width: 100%;
             margin: 0 auto;
-            padding: clamp(60px, 10vh, 100px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .box-wrapper::before {
+        /* Replaced single image with gallery layout */
+        .gallery-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: center;
+            /* Устанавливаем ту же ширину что и у stats-grid */
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 clamp(24px, 5vw, 80px);
+        }
+
+        .main-image-wrapper {
+            position: relative;
+            width: 100%;
+            /* Уменьшаем высоту с 90vh до 75vh */
+            height: clamp(500px, 75vh, 850px);
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .main-image-wrapper::before {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 600px;
-            height: 600px;
+            width: 120%;
+            height: 120%;
             background: radial-gradient(circle, rgba(0, 255, 136, 0.15) 0%, rgba(0, 217, 255, 0.08) 40%, transparent 70%);
             transform: translate(-50%, -50%);
             pointer-events: none;
             animation: pulse-glow 4s ease-in-out infinite;
+            z-index: 0;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-            50% {
-                opacity: 0.6;
-                transform: translate(-50%, -50%) scale(1.1);
-            }
-        }
-
-        .box-image {
+        .gallery-main-image {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: contain;
             position: relative;
             z-index: 1;
             filter: drop-shadow(0 20px 60px rgba(0, 255, 136, 0.3));
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .box-image:hover {
-            transform: translateY(-12px) scale(1.02);
-            filter: drop-shadow(0 30px 80px rgba(0, 255, 136, 0.5));
+        .gallery-thumbs {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1400px;
+        }
+
+        .thumb-item {
+            width: 120px;
+            height: 90px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .thumb-item:hover {
+            border-color: rgba(0, 255, 136, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .thumb-item.active {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.3s ease;
+        }
+
+        .thumb-item:not(.active) img {
+            opacity: 0.6;
+        }
+
+        .thumb-item.active img {
+            opacity: 1;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-nav:hover {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: #00ff88;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .gallery-nav.prev {
+            left: 20px;
+        }
+
+        .gallery-nav.next {
+            right: 20px;
+        }
+
+        .gallery-nav svg {
+            width: 24px;
+            height: 24px;
+            fill: #00ff88;
         }
 
         .scan-line {
@@ -963,6 +1056,32 @@
             .box-wrapper {
                 padding: clamp(40px, 8vh, 60px);
             }
+
+            .main-image-wrapper {
+                aspect-ratio: 3/4;
+            }
+
+            .gallery-thumbs {
+                gap: 12px;
+            }
+
+            .thumb-item {
+                width: 80px;
+                height: 60px;
+            }
+
+            .gallery-nav {
+                width: 40px;
+                height: 40px;
+            }
+
+            .gallery-nav.prev {
+                left: 10px;
+            }
+
+            .gallery-nav.next {
+                right: 10px;
+            }
         }
 
     </style>
@@ -1018,7 +1137,25 @@
     <section class="product-box">
         <div class="container">
             <div class="box-wrapper">
-                <img src="img/boxai_4x.png" alt="Release любой ценой — ИИ рендер упаковки игры" class="box-image">
+                <!-- Replaced single image with interactive gallery -->
+                <div class="gallery-container">
+                    <div class="main-image-wrapper">
+                        <img id="mainGalleryImage" src="img/boxai_4x.png" alt="Release любой ценой — упаковка игры" class="gallery-main-image" style="object-fit: cover;">
+                        <button class="gallery-nav prev" onclick="changeGalleryImage(-1)" aria-label="Предыдущее изображение">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                            </svg>
+                        </button>
+                        <button class="gallery-nav next" onclick="changeGalleryImage(1)" aria-label="Следующее изображение">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="gallery-thumbs" id="galleryThumbs">
+                        <!-- Thumbnails will be generated by JavaScript -->
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1465,6 +1602,50 @@
                     item.classList.add('active');
                 }
             });
+        });
+
+        const galleryImages = [
+            { src: 'img/boxai_4x.png', alt: 'Упаковка игры Release любой ценой' },
+            { src: '/placeholder.svg?height=1200&width=1600', alt: 'Содержимое игры' },
+            { src: '/placeholder.svg?height=1200&width=1600', alt: 'Игровые карты крупным планом' },
+            { src: '/placeholder.svg?height=1200&width=1600', alt: 'Игровой процесс' },
+            { src: '/placeholder.svg?height=1200&width=1600', alt: 'Примеры карт' }
+        ];
+
+        let currentGalleryIndex = 0;
+
+        function initGallery() {
+            const thumbsContainer = document.getElementById('galleryThumbs');
+            galleryImages.forEach((img, index) => {
+                const thumb = document.createElement('div');
+                thumb.className = `thumb-item ${index === 0 ? 'active' : ''}`;
+                thumb.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+                thumb.onclick = () => setGalleryImage(index);
+                thumbsContainer.appendChild(thumb);
+            });
+        }
+
+        function setGalleryImage(index) {
+            currentGalleryIndex = index;
+            const mainImage = document.getElementById('mainGalleryImage');
+            mainImage.src = galleryImages[index].src;
+            mainImage.alt = galleryImages[index].alt;
+
+            // Update active thumbnail
+            const thumbs = document.querySelectorAll('.thumb-item');
+            thumbs.forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        function changeGalleryImage(direction) {
+            currentGalleryIndex = (currentGalleryIndex + direction + galleryImages.length) % galleryImages.length;
+            setGalleryImage(currentGalleryIndex);
+        }
+
+        // Initialize gallery on page load
+        window.addEventListener('load', () => {
+            initGallery();
         });
     </script>
 </body>
