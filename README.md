@@ -22,15 +22,15 @@ PnP версия игры распространяется по лицензии
 Испытайте на себе все прелести разработки в безопасной обстановке настольной игры.
 
 ### Происхождение и авторство
-Отправной точкой для «Release Любой Ценой» стала карточная игра **[Deploy or Die](https://www.deployordie.com/)** ([deployordie/card-game](https://github.com/deployordie/card-game)) — от неё идея игры про релиз и общий каркас механик. Дальше игра выросла в самостоятельную: тексты карт и правил написаны своими словами, состав карт и механики переработаны, а баланс и объём колоды рассчитаны на 2–6 игроков (вместо 2–4).
+Отправной точкой для «Release любой ценой» стала карточная игра **[Deploy or Die](https://www.deployordie.com/)** ([deployordie/card-game](https://github.com/deployordie/card-game)) — от неё идея игры про релиз и общий каркас механик. Дальше игра выросла в самостоятельную: тексты карт и правил написаны своими словами, состав карт и механики переработаны, а баланс и объём колоды рассчитаны на 2–6 игроков (вместо 2–4).
 
-Deploy or Die® — товарный знак Kreativní Laboratoř s.r.o.; «Release Любой Ценой» с его правообладателями не связан.
+Deploy or Die® — товарный знак Kreativní Laboratoř s.r.o.; «Release любой ценой» с его правообладателями не связан.
 
 Спасибо команде Deploy or Die за вдохновение! Уведомление об авторских правах и текст лицензии MIT из их репозитория сохранены в [LICENSE-deployordie](LICENSE-deployordie).
 
-*"Release Любой Ценой" was inspired by the card game [Deploy or Die](https://www.deployordie.com/) ([deployordie/card-game](https://github.com/deployordie/card-game)), which gave us the core idea and the general mechanics framework. From there it grew into a separate game: all card and rule texts are in our own words, the card set and mechanics were reworked, and the balance is designed for 2–6 players. The MIT copyright notice from the original repository is preserved in [LICENSE-deployordie](LICENSE-deployordie). Thanks to the Deploy or Die team for the inspiration!*
+*"Release любой ценой" was inspired by the card game [Deploy or Die](https://www.deployordie.com/) ([deployordie/card-game](https://github.com/deployordie/card-game)), which gave us the core idea and the general mechanics framework. From there it grew into a separate game: all card and rule texts are in our own words, the card set and mechanics were reworked, and the balance is designed for 2–6 players. The copyright notice and MIT license text from the Deploy or Die repository are preserved in [LICENSE-deployordie](LICENSE-deployordie). Thanks to the Deploy or Die team for the inspiration!*
 
 ### Контакты
-[Можете поддержать проект на Boosty](https://boosty.to/releaseanycost) — предзаказы, апдейты и эксклюзивы.
+Путь игры от первых версий до релиза — в архиве на [Boosty](https://boosty.to/releaseanycost).
 
 © 2026 Дмитрий Тогулев, Алексей Штырняев. Release любой ценой
