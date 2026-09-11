@@ -1,5 +1,13 @@
 Хранилище PnP архивов
 
+### Что в архиве
+- `PnP_Правила_игры_Release_любой_ценой_v.03_RU.pdf` — правила игры
+- `ReleaseЛюбойЦеной_PnP_Cards_Base_v03_RU.pdf` — базовая колода
+- `ReleaseЛюбойЦеной_PnP_Cards_AI_v03_RU.pdf` — карты AI
+- `LICENSE-deployordie` — уведомление о лицензии MIT игры Deploy or Die (см. ниже)
+
+Бонус в этой папке: стикер-пак `SVG StickerPack A5` (PDF и SVG).
+
 ### Рекомендации по печати
 
 тут будут рекомендации по печати
@@ -17,3 +25,8 @@
 - Использовать эти материалы в коммерческих целях (продавать PnP-версию, компоненты, получать прибыль).
 
 Полный юридический текст лицензии доступен по ссылке: https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+### Авторство
+Игра вдохновлена карточной игрой [Deploy or Die](https://www.deployordie.com/). Deploy or Die® — товарный знак Kreativní Laboratoř s.r.o.; «Release любой ценой» с его правообладателями не связан.
+
+Репозиторий Deploy or Die ([deployordie/card-game](https://github.com/deployordie/card-game)) распространяется по лицензии MIT. Уведомление об авторских правах и текст лицензии лежат в архиве (`LICENSE-deployordie`) и в конце правил (раздел «Авторство и лицензии»). Они относятся только к Deploy or Die и не входят в лицензию CC BY-NC-SA 4.0 этой PnP-версии.
